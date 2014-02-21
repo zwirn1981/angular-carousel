@@ -58,6 +58,37 @@ angular.module('angular-carousel')
   };
 }]);
 
+angular.module('angular-carousel')
+
+.directive('rnCarouselAnimates', [function() {
+    return {
+        restrict: 'A',
+        replace: false,
+        scope: {
+            items: '=',
+            index: '=',
+            rnCarouselAnimates: '='
+        },
+        link: function(scope, element, attrs) {
+
+            scope.timer = function(){
+                setTimeout(function(){
+                    scope.$apply(function(){
+                        if(scope.index >= (scope.items.length - 1) ){
+                            scope.index=0;
+                        } else {
+                            scope.index++;
+                        }
+                    });
+                    scope.timer();
+                },scope.rnCarouselAnimates);
+            };
+            scope.timer();
+
+        }
+    };
+}]);
+
 (function() {
     "use strict";
 
@@ -159,6 +190,13 @@ angular.module('angular-carousel')
                     // enable carousel controls
                     if (angular.isDefined(iAttributes.rnCarouselControl)) {
                         var controls = $compile("<div id='carousel-" + carouselId +"-controls' index='indicatorIndex' items='carouselIndicatorArray' rn-carousel-controls class='rn-carousel-controls'></div>")(scope);
+                        container.append(controls);
+                    }
+
+                    // enable carousel animation after a given time
+                    if (angular.isDefined(iAttributes.rnCarouselAnimate)) {
+                        scope.carouselAnimationTime = iAttributes.rnCarouselAnimate;
+                        var controls = $compile("<div id='carousel-" + carouselId +"-animates' index='indicatorIndex' items='carouselIndicatorArray' rn-carousel-animates='carouselAnimationTime' class='rn-carousel-animates'></div>")(scope);
                         container.append(controls);
                     }
 
