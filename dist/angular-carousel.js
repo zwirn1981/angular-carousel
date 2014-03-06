@@ -283,7 +283,7 @@ angular.module('angular-carousel')
                         // use CSS 3D transform to move the carousel
                         //console.log('scroll', x, 'index', scope.carouselIndex);
                         if (isNaN(x)) {
-                            x = scope.carouselIndex * containerWidth;
+                            x = ((scope.carouselIndex * containerWidth) + (scope.carouselIndex*4));
                         }
 
                         offset = x;
